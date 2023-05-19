@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ../game-server
+      dockerfile: Dockerfile
+    ports:
+       - '5000:5000'
+    volumes: 
+      - ../game-server:/app
+      - /app/node_modules
+    env_file: 
+      - ../game-server/env/backend.env
+  frontend:
+    build: 
+      context: ../game-client
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes: 
+      - ../game-client/src:/app/src
+      - /app/node_modules
+    env_file: ../game-client/.env
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - backend
